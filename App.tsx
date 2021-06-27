@@ -71,7 +71,7 @@
          contentInsetAdjustmentBehavior="automatic"
          style={backgroundStyle}>
          <Header />
-         <Text> {Config.API_URL}11</Text>
+         <Text> {Config.API_URL}</Text>
         
          
        </ScrollView>
