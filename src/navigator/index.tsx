@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:06:27
- * @LastEditTime: 2021-06-27 11:24:46
+ * @LastEditTime: 2021-06-27 15:00:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\index.tsx
@@ -25,8 +25,9 @@ class Navigator extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
+        <Stack.Navigator headerMode='float'
+        >
+          <Stack.Screen name="Home" component={Home}  options={{headerTitleStyle :{alignSelf:'center'} }} />
           <Stack.Screen name="Detail" component={Detail} />
         </Stack.Navigator>
       </NavigationContainer>
