@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-06 21:01:38
- * @LastEditTime: 2021-06-27 11:10:39
+ * @LastEditTime: 2021-07-19 21:37:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \AwesomeTSProject\src\index.tsx
@@ -23,5 +23,6 @@
 // export default App
 
 import Navigator from '@/navigator/index';
+// import BottomTabs from '@/navigator/BottomTabs';
 
 export default Navigator

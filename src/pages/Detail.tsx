@@ -1,11 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-06-27 16:27:45
+ * @LastEditTime: 2021-07-06 20:13:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
  */
+
 import { RouteProp } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, ViewPropTypes } from 'react-native';
