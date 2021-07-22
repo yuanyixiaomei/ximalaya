@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:06:27
- * @LastEditTime: 2021-07-20 20:36:26
+ * @LastEditTime: 2021-07-22 22:44:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\index.tsx
@@ -58,7 +58,7 @@ class Navigator extends React.Component {
           }
           }
         >
-          <Stack.Screen name="BottomTabs" component={BottomTabs} />
+          <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerTitle :'首页'}}/>
           <Stack.Screen name="Detail" component={Detail} />
 
         </Stack.Navigator>
