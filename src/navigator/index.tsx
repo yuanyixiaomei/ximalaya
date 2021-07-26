@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:06:27
- * @LastEditTime: 2021-07-22 22:44:49
+ * @LastEditTime: 2021-07-25 13:59:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\index.tsx
@@ -14,7 +14,7 @@ import FlatlistPage from '@/pages/FlatlistPage';
 import Detail from '@/pages/Detail';
 
 import BottomTabs from '@/navigator/BottomTabs';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, StatusBar } from 'react-native';
 
 export type RootStackParamList = {
   BottomTabs: {
@@ -40,6 +40,7 @@ class Navigator extends React.Component {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             gestureEnabled: true,//开启手势
             gestureDirection: 'horizontal', //设置手势从左往右滑动关闭
+            headerStatusBarHeight:StatusBar.currentHeight,
             headerStyle: {
               ...Platform.select({
                 android: {

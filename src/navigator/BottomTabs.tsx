@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-27 16:39:35
- * @LastEditTime: 2021-07-22 22:42:17
+ * @LastEditTime: 2021-07-24 10:14:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\BottomTabs.tsx
@@ -9,7 +9,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '@/pages/Home';
+import HomeTabs from '@/navigator/HomeTabs';
 
 import Icon from '@/assets/iconfont/index';
 
@@ -25,7 +25,7 @@ import { RootStackNavigation, RootStackParamList } from '@/navigator/index'
 import { IconProps } from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 export type BottomTabParamList = {
-    Home: undefined,
+    HomeTabs: undefined,
     Listen: undefined,
     Found: undefined,
     Account: undefined
@@ -46,10 +46,10 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 
 function getHeaderTitle(route: Route) {
-    const routeName = route.state ? route.state.routes[route.state.index].name : route.params?.screen || 'HOME'
+    const routeName = route.state ? route.state.routes[route.state.index].name : route.params?.screen || 'HomeTabs'
 
     switch (routeName) {
-        case '"Home"':
+        case '"HomeTabs"':
             return '首页';
         case 'Listen':
             return '我听';
@@ -74,7 +74,7 @@ class BottomTabs extends React.Component<IProps>{
     render() {
         return (
             <Tab.Navigator tabBarOptions={{ activeTintColor: '#f86442' }}>
-                <Tab.Screen name="Home" component={Home} options={{
+                <Tab.Screen name="HomeTabs" component={HomeTabs} options={{
                     tabBarLabel: '首页',
                     tabBarIcon: ({ color, size }) => (
                         <Icon name="icon-shouye" color={color} size={18} />
@@ -110,12 +110,3 @@ class BottomTabs extends React.Component<IProps>{
     }
 }
 export default BottomTabs
-
-// Class  MyTabs() {
-//     return (
-//       <Tab.Navigator>
-//         <Tab.Screen name="Home" component={HomeScreen} />
-//         <Tab.Screen name="Settings" component={SettingsScreen} />
-//       </Tab.Navigator>
-//     );
-//   }
