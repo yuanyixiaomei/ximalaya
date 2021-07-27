@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-07-26 23:14:53
+ * @LastEditTime: 2021-07-27 22:59:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
  */
 import React from 'react';
-import { View, Text, ViewPropTypes, Button } from 'react-native';
+import { View, Text, ViewPropTypes, Button,ScrollView } from 'react-native';
 import { RootStackNavigation } from '@/navigator/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from "@/models/index"
@@ -54,22 +54,13 @@ class Home extends React.Component<Iprops>{
   render() {
     const { loading, carousels } = this.props
     return (
-      <View>
+      <ScrollView>
 
         <Carousel data={carousels} />
         <Guess />
 
 
-
-        {/*
-        <Text>{ loading?'正在加载':''}</Text>
-        <Button title='加' onPress={this.HandelAdd}></Button>
-       
-        <Button title='异步添加' onPress={this.HandelAsyncAdd}></Button>
-        <Button title='跳转到详情页面' onPress={this.onPress}></Button> */}
-
-
-      </View>
+      </ScrollView>
     );
   }
 }
