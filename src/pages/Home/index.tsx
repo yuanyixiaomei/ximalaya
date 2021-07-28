@@ -1,23 +1,26 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-07-27 22:59:34
+ * @LastEditTime: 2021-07-28 22:28:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
  */
 import React from 'react';
-import { View, Text, ViewPropTypes, Button,ScrollView } from 'react-native';
+import { View, Text, ViewPropTypes, Button,ScrollView,FlatList,ListRenderItemInfo } from 'react-native';
 import { RootStackNavigation } from '@/navigator/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from "@/models/index"
+import {  IChannel} from "@/models/home"
 import Carousel from './Carousel';
 import Guess from './Guess';
+import ChannelItem from './ChannelItem';
 
 
 const mapStateToProps = ({ home, loading }: RootState) => ({
   carousels: home.carousels,
   guess: home.guess,
+  channels: home.channels,
   loading: loading.effects['home/fetchCarousels']
 
 })
@@ -41,6 +44,11 @@ class Home extends React.Component<Iprops>{
 
     })
 
+    dispatch({
+      type: 'home/fetchChannels',
+
+    })
+
   }
   onPress = () => {
     const { navigation } = this.props;
@@ -48,16 +56,22 @@ class Home extends React.Component<Iprops>{
 
   }
 
+  renderItem = ({item}:ListRenderItemInfo<IChannel>) => {
+    return <ChannelItem data = { item} />
+  }
+
 
 
 
   render() {
-    const { loading, carousels } = this.props
+    const { loading, carousels, channels } = this.props
+    
     return (
       <ScrollView>
 
         <Carousel data={carousels} />
         <Guess />
+        <FlatList data={channels} renderItem={ this.renderItem}/>
 
 
       </ScrollView>

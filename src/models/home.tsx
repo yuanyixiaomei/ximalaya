@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-21 21:24:17
- * @LastEditTime: 2021-07-26 23:05:19
+ * @LastEditTime: 2021-07-28 22:19:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\models\home.ts
@@ -10,10 +10,24 @@
 import { Model,Effect } from "dva-core-ts"
 import { Reducer } from "redux"
 import axios from 'axios';
-// const CAROUSEL_URL = '/mock/11/carousel'
+
+//轮播图
 const CAROUSEL_URL = '/mock/709/carousel'
+
 //猜你喜欢
 const GUESS_URL = '/mock/709/guress'
+
+//首页列表
+const CHANNEL_URL = '/mock/709/channel'
+
+export interface IChannel{
+    id: string;
+    title: string;
+    image: string;
+    remark: string;
+    played: string;
+    playing: string;
+}
 
 export interface IGuess{
     id: string;
@@ -28,8 +42,9 @@ export interface ICarousel{
 }
 
  export interface HomeState {
-    carousels:ICarousel []
-    guess:IGuess []
+     carousels: ICarousel[];
+     guess: IGuess[];
+     channels: IChannel[];
 }
 interface HomeModel extends Model {
     namespace: 'home';
@@ -39,7 +54,8 @@ interface HomeModel extends Model {
     }
     effects: {
         fetchCarousels: Effect,
-        fetchGuess:Effect
+        fetchGuess: Effect,
+        fetchChannels:Effect
     
     };
 
@@ -47,7 +63,10 @@ interface HomeModel extends Model {
 
 const initialState = {
     carousels: [],
-    guess: []
+    guess: [],
+    channels:[],
+
+
 }
 
 const homemodel: HomeModel = {
@@ -63,7 +82,6 @@ const homemodel: HomeModel = {
     },
     effects: {
         *fetchCarousels(_, { call, put }) {
-
             const {data} = yield call(axios.get,CAROUSEL_URL )
             console.log('轮播图数据',data)
             yield put({
@@ -71,11 +89,9 @@ const homemodel: HomeModel = {
                     carousels:data
                 }
             })
-        
         },
 
         *fetchGuess(_, { call, put }) {
-
             const {data} = yield call(axios.get,GUESS_URL )
             console.log('猜你喜欢',data)
             yield put({
@@ -83,9 +99,17 @@ const homemodel: HomeModel = {
                     guess:data
                 }
             })
-        
-        }
+        },
 
+        *fetchChannels(_, { call, put }) {
+            const {data} = yield call(axios.get,CHANNEL_URL )
+            console.log('渠道',data)
+            yield put({
+                type: 'setState', payload: {
+                    channels:data.results
+                }
+            })
+        }
 
 
     }
