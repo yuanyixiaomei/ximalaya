@@ -1,17 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-07-28 22:28:21
+ * @LastEditTime: 2021-07-29 22:28:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
  */
 import React from 'react';
-import { View, Text, ViewPropTypes, Button,ScrollView,FlatList,ListRenderItemInfo } from 'react-native';
+import { View, Text, ViewPropTypes, Button, ScrollView, FlatList, ListRenderItemInfo } from 'react-native';
 import { RootStackNavigation } from '@/navigator/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from "@/models/index"
-import {  IChannel} from "@/models/home"
+import { IChannel } from "@/models/home"
 import Carousel from './Carousel';
 import Guess from './Guess';
 import ChannelItem from './ChannelItem';
@@ -56,25 +56,37 @@ class Home extends React.Component<Iprops>{
 
   }
 
-  renderItem = ({item}:ListRenderItemInfo<IChannel>) => {
-    return <ChannelItem data = { item} />
+  renderItem = ({ item }: ListRenderItemInfo<IChannel>) => {
+    return <ChannelItem data={item} />
+  }
+
+
+  get header() {
+    const { carousels } = this.props
+    return (
+      <View>
+        <ScrollView>
+          <Carousel data={carousels} />
+          <Guess />
+
+        </ScrollView>
+
+      </View>
+    )
+
   }
 
 
 
-
   render() {
-    const { loading, carousels, channels } = this.props
-    
+    const { channels } = this.props
+
     return (
-      <ScrollView>
-
-        <Carousel data={carousels} />
-        <Guess />
-        <FlatList data={channels} renderItem={ this.renderItem}/>
 
 
-      </ScrollView>
+      <FlatList ListHeaderComponent={this.header} data={channels} renderItem={this.renderItem} />
+
+
     );
   }
 }
