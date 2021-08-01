@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-07-29 22:24:39
+ * @LastEditTime: 2021-07-31 10:10:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
@@ -9,22 +9,30 @@
 import React from 'react';
 import { View, Text, ScrollView, FlatList, ListRenderItemInfo, StyleSheet, Image } from 'react-native';
 import { IChannel } from '@/models/home';
+import Touchable from '@/components/Touchable'
 
 import Icon from '@/assets/iconfont/index';
 
 interface IProps {
-  data: IChannel
+  data: IChannel,
+  onPress:(data:IChannel)=>void
 }
 
-class Channeltem extends React.Component<IProps> {
+class Channeltem extends React.PureComponent<IProps> {
   componentDidMount() {
 
+  }
+  onPress = () => {
+    const { data, onPress } = this.props
+    if (typeof onPress === 'function') {
+      onPress(data)
+    }
   }
 
   render() {
     const { data } = this.props
     return (
-      <View style={styles.container}>
+      <Touchable onPress={this.onPress} style={styles.container}>
         <Image source={{ uri: data.image }} style={styles.image} />
 
         <View style={styles.rightContainer}>
@@ -46,16 +54,9 @@ class Channeltem extends React.Component<IProps> {
                 {data.playing}
               </Text>
             </View>
-
           </View>
-
-
         </View>
-
-
-
-
-      </View>
+      </Touchable>
     );
   }
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-21 21:24:17
- * @LastEditTime: 2021-07-28 22:19:23
+ * @LastEditTime: 2021-07-31 15:48:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\models\home.ts
@@ -10,6 +10,7 @@
 import { Model,Effect } from "dva-core-ts"
 import { Reducer } from "redux"
 import axios from 'axios';
+import { RootState } from ".";
 
 //轮播图
 const CAROUSEL_URL = '/mock/709/carousel'
@@ -19,6 +20,12 @@ const GUESS_URL = '/mock/709/guress'
 
 //首页列表
 const CHANNEL_URL = '/mock/709/channel'
+
+export interface IPagination{
+    current: number,
+    total: number,
+    hasMore:boolean
+}
 
 export interface IChannel{
     id: string;
@@ -45,6 +52,7 @@ export interface ICarousel{
      carousels: ICarousel[];
      guess: IGuess[];
      channels: IChannel[];
+     pagination:IPagination
 }
 interface HomeModel extends Model {
     namespace: 'home';
@@ -64,7 +72,12 @@ interface HomeModel extends Model {
 const initialState = {
     carousels: [],
     guess: [],
-    channels:[],
+    channels: [],
+    pagination: {
+        current: 1,
+        total: 0,
+        hasMore:true
+    }
 
 
 }
@@ -101,14 +114,39 @@ const homemodel: HomeModel = {
             })
         },
 
-        *fetchChannels(_, { call, put }) {
-            const {data} = yield call(axios.get,CHANNEL_URL )
-            console.log('渠道',data)
+        *fetchChannels({ callback, payload }, { call, put, select }) {
+            const { channels, pagination } = yield select((state: RootState) => state.home)
+
+            let page=1
+            if (payload && payload.loadMore) {
+                page=pagination.current+1
+            }
+
+            const { data } = yield call(axios.get, CHANNEL_URL, {
+                params: {
+                page,
+            }})
+            console.log('渠道', data)
+
+            let newChannels=data.results
+            if (payload && payload.loadMore) {
+                newChannels=channels.concat(newChannels)
+            }
+
+            // let pagination=data.pagination
             yield put({
                 type: 'setState', payload: {
-                    channels:data.results
+                    channels: newChannels,
+                    pagination: {
+                        current:data.pagination.current,
+                        total:data.pagination.total,
+                        hasMore:newChannels.length<data.pagination.total
+                    }
                 }
             })
+            if (typeof callback === 'function') {
+                callback()
+            }
         }
 
 

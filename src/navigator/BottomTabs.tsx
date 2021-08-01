@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-27 16:39:35
- * @LastEditTime: 2021-07-24 10:14:17
+ * @LastEditTime: 2021-07-31 20:34:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\BottomTabs.tsx
@@ -45,9 +45,7 @@ interface IProps {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 
-function getHeaderTitle(route: Route) {
-    const routeName = route.state ? route.state.routes[route.state.index].name : route.params?.screen || 'HomeTabs'
-
+function getHeaderTitle(routeName: string) {
     switch (routeName) {
         case '"HomeTabs"':
             return '首页';
@@ -64,11 +62,31 @@ function getHeaderTitle(route: Route) {
 }
 
 class BottomTabs extends React.Component<IProps>{
-    componentDidUpdate() {
+    setOptions = () => {
         const { navigation, route } = this.props
-        navigation.setOptions({
-            headerTitle: getHeaderTitle(route)
-        })
+        const routeName = route.state ? route.state.routes[route.state.index].name : route.params?.screen || 'HomeTabs'
+        if (routeName === 'HomeTabs') {
+            navigation.setOptions({
+                headerTransparent: true,
+                headerTitle: ''
+            })
+
+        } else {
+            navigation.setOptions({
+                headerTransparent: false,
+                headerTitle: getHeaderTitle(routeName)
+            })
+        }
+    }
+    componentDidMount() {
+        this.setOptions()
+
+    }
+    componentDidUpdate() {
+        this.setOptions()
+
+
+
 
     }
     render() {

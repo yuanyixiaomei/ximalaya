@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 23:03:47
- * @LastEditTime: 2021-07-27 23:01:24
+ * @LastEditTime: 2021-07-31 14:36:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home\Guess.tsx
@@ -37,6 +37,9 @@ class Guess extends React.Component<ModelState>{
       type: 'home/fetchGuess'
     })
 
+  }
+  keyExtractor = (  item: IGuess )=> {
+   return item.id
   }
 
   renderItem = ({ item }: { item: IGuess }) => {
@@ -75,6 +78,7 @@ class Guess extends React.Component<ModelState>{
           data={guess}
           numColumns={3}
           renderItem={this.renderItem}
+          keyExtractor={this.keyExtractor}
         />
  
         <Touchable style={styles.changeGuess} onPress={() => {
