@@ -1,18 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:00:42
- * @LastEditTime: 2021-07-31 20:10:46
+ * @LastEditTime: 2021-08-12 21:00:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home.TSX
  */
 import React from 'react';
-import { View, Text, ViewPropTypes, Button, ScrollView, FlatList, ListRenderItemInfo, StyleSheet } from 'react-native';
+import { View, Text, ViewPropTypes, Button, ScrollView, FlatList, ListRenderItemInfo, StyleSheet, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { RootStackNavigation } from '@/navigator/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { RootState } from "@/models/index"
 import { IChannel } from "@/models/home"
-import Carousel from './Carousel';
+import Carousel, { sideheight } from './Carousel';
 import Guess from './Guess';
 import ChannelItem from './ChannelItem';
 
@@ -20,6 +20,7 @@ import ChannelItem from './ChannelItem';
 const mapStateToProps = ({ home, loading }: RootState) => ({
   carousels: home.carousels,
   guess: home.guess,
+  gradientVisible: home.gradientVisible,
   channels: home.channels,
   hasMore:home.pagination.hasMore,
   pagination:home.pagination,
@@ -80,12 +81,16 @@ class Home extends React.Component<Iprops, IState>{
 
 
   get header() {
-    const { carousels } = this.props
     return (
       <View>
         <ScrollView>
-          <Carousel data={carousels} />
+          <Carousel />
+          <View style={style.wihteBackground}>
           <Guess />
+
+          </View>
+          
+          
 
         </ScrollView>
 
@@ -156,6 +161,24 @@ class Home extends React.Component<Iprops, IState>{
     
   }
 
+  onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = nativeEvent.contentOffset.y
+    let newGradientVisible = offsetY < sideheight
+    console.log(offsetY,newGradientVisible,'11')
+    const { dispatch, gradientVisible } = this.props
+    if (gradientVisible !== newGradientVisible) {
+      dispatch({
+        type: 'home/setState',
+        payload: {
+          gradientVisible:  newGradientVisible
+        }
+      })
+      
+    }
+  
+    
+  }
+
 
   render() {
     const { channels } = this.props
@@ -172,9 +195,10 @@ class Home extends React.Component<Iprops, IState>{
         renderItem={this.renderItem}
         onRefresh={this.onRefresh}
         refreshing={refreshing}
-      
+    
         onEndReached={this.onEndReached}
         onEndReachedThreshold={0.2}
+        onScroll={this.onScroll}
       />
 
 
@@ -185,6 +209,9 @@ const style = StyleSheet.create({
   end: {
     alignItems: 'center',
     paddingVertical:10,
+  },
+  wihteBackground: {
+    backgroundColor:"#fff"
   },
   loading: {
     alignItems: 'center',

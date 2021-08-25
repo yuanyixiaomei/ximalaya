@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-27 16:39:35
- * @LastEditTime: 2021-07-31 20:34:20
+ * @LastEditTime: 2021-08-07 11:34:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\BottomTabs.tsx
@@ -84,9 +84,6 @@ class BottomTabs extends React.Component<IProps>{
     }
     componentDidUpdate() {
         this.setOptions()
-
-
-
 
     }
     render() {

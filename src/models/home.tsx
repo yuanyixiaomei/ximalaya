@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-21 21:24:17
- * @LastEditTime: 2021-07-31 15:48:13
+ * @LastEditTime: 2021-08-11 22:59:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\models\home.ts
@@ -50,7 +50,9 @@ export interface ICarousel{
 
  export interface HomeState {
      carousels: ICarousel[];
+     activeCarouselIndex: number;
      guess: IGuess[];
+     gradientVisible:Boolean;
      channels: IChannel[];
      pagination:IPagination
 }
@@ -70,6 +72,8 @@ interface HomeModel extends Model {
 }
 
 const initialState = {
+    activeCarouselIndex: 0,
+    gradientVisible:true,
     carousels: [],
     guess: [],
     channels: [],

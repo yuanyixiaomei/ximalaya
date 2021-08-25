@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-24 11:36:18
- * @LastEditTime: 2021-07-26 22:50:26
+ * @LastEditTime: 2021-08-11 22:55:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Home\Carrousel.tsx
@@ -11,31 +11,49 @@ import SnapCarousel, { ParallaxImage, AdditionalParallaxProps, Pagination } from
 import { viewportWith, wp, hp } from '@/utils/index.tsx'
 import { viewportheight } from '@/utils/index.tsx'
 import { StyleSheet, View } from 'react-native'
-import {ICarousel} from "@/models/home"
+import { ICarousel } from "@/models/home"
+import { RootStackNavigation } from '@/navigator/index'
+import { connect, ConnectedProps } from 'react-redux'
+import { RootState } from "@/models/index"
+
+
+
 
 
 const sliderWidth = viewportWith
 const sliderHeight = viewportheight
 const sidewidth = wp(90)
 const itemWidth = sidewidth + wp(2) * 2
-
-const sideheight = wp(46)
+ export const sideheight = wp(46)
 const itemHeight = sideheight + wp(2) * 2
 
-interface IProps{
-  data:ICarousel[]
+ 
+const mapStateToProps = ({ home, loading }: RootState) => ({
+  data: home.carousels,
+  activeCarouselIndex:home.activeCarouselIndex
+
+})
+
+
+const connector = connect(mapStateToProps)
+
+type ModelState = ConnectedProps<typeof connector>
+
+
+interface IProps extends ModelState {
 }
 
 class Carousel extends React.Component<IProps> {
-  state = {
-    activeslide: 0
-  }
 
   onSnapToItem = (index: number) => {
-    this.setState({
-      activeslide: index
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'home/setState',
+      payload: {
+        activeCarouselIndex:index
+      }
     })
-
+   
   }
 
   renderItem = ({ item }: { item: ICarousel }, parallaxProps?: AdditionalParallaxProps) => {
@@ -55,15 +73,15 @@ class Carousel extends React.Component<IProps> {
   }
 
   get paginatiion() {
-    const { activeslide } = this.state;
-    const {data}=this.props
+    const { data, activeCarouselIndex } = this.props
+    console.log(data,'11')
 
 
     return (
       <View style={styles.paginationWrapper}>
         <Pagination
           containerStyle={styles.paginationContainer}
-          activeDotIndex={activeslide}
+          activeDotIndex={activeCarouselIndex}
           dotContainerStyle={styles.dotContainer}
           dotStyle={styles.dot}
           inactiveDotScale={0.8}
@@ -135,4 +153,4 @@ const styles = StyleSheet.create({
     backgroundColor:'rgba(255,255,255,0.92)'
   }
 })
-export default Carousel
+export default connector(Carousel) 

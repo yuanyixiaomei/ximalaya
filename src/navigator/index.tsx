@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:06:27
- * @LastEditTime: 2021-07-27 18:33:51
+ * @LastEditTime: 2021-08-25 20:45:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\index.tsx
@@ -10,6 +10,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator, HeaderStyleInterpolators, StackNavigationProp } from '@react-navigation/stack'
 import Home from '@/pages/Home';
+import Category from '@/pages/Category/index';
 import FlatlistPage from '@/pages/FlatlistPage';
 import Detail from '@/pages/Detail';
 
@@ -20,6 +21,9 @@ export type RootStackParamList = {
   BottomTabs: {
     screen?: string
   };
+  Category: {
+    screen?:string
+  }
   Detail: {
     id: number;
   };
@@ -59,7 +63,9 @@ class Navigator extends React.Component {
           }
           }
         >
-          <Stack.Screen name="BottomTabs" component={BottomTabs} options={{headerTitle :'首页'}}/>
+          <Stack.Screen name="BottomTabs" component={BottomTabs} options={{ headerTitle: '首页' }} />
+          <Stack.Screen name="Category" component={Category} options={{headerTitle :'分类'}}/>
+
 
         </Stack.Navigator>
       </NavigationContainer>
