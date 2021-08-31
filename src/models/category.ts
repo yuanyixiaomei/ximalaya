@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-23 21:05:13
- * @LastEditTime: 2021-08-25 21:34:56
+ * @LastEditTime: 2021-08-31 14:30:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\models\category.ts
@@ -16,6 +16,7 @@ import {
 import { Reducer } from "redux";
 import storage, { load } from "@/config/storage";
 import axios from "axios";
+import { RootState } from ".";
 
 const CATEGORY_URL='/mock/709/category'
 
@@ -28,12 +29,14 @@ const CATEGORY_URL='/mock/709/category'
 interface CategoryModelState {
   myCategorys: ICategory[];
   categorys: ICategory[];
+  isEdit:boolean
 }
 interface CategoryModel extends Model {
   namespace: "category";
   state: CategoryModelState;
   effects: {
     loadData: Effect;
+    toggle:Effect
   };
   reducers: {
     setState: Reducer<CategoryModelState>;
@@ -42,6 +45,7 @@ interface CategoryModel extends Model {
 }
 
 const initialState = {
+  isEdit: false,
   myCategorys: [
     {
       id: "home",
@@ -80,6 +84,23 @@ const categoryModel: CategoryModel = {
         });
       }
     },
+    *toggle({ payload }, { put, select }) {
+    const category= yield select(({ category }: RootState) => {
+        return category
+        
+    })
+      
+      yield put({
+      
+        type: 'setState',
+        payload: {
+          isEdit:!category.isEdit,
+        }
+    })
+      
+      
+      
+    }
   },
   reducers: {
     setState(state, { payload }) {

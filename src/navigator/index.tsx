@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-26 19:06:27
- * @LastEditTime: 2021-08-25 20:45:38
+ * @LastEditTime: 2021-08-31 15:59:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\navigator\index.tsx
@@ -44,7 +44,16 @@ class Navigator extends React.Component {
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             gestureEnabled: true,//开启手势
             gestureDirection: 'horizontal', //设置手势从左往右滑动关闭
-            headerStatusBarHeight:StatusBar.currentHeight,
+           
+            ...Platform.select({
+              android: {
+                headerStatusBarHeight: StatusBar.currentHeight, //判断平台设置高度
+                
+              }
+            }) ,
+        
+            headerBackTitleVisible: false,
+            headerTintColor:'#333',
             headerStyle: {
               ...Platform.select({
                 android: {
@@ -64,7 +73,11 @@ class Navigator extends React.Component {
           }
         >
           <Stack.Screen name="BottomTabs" component={BottomTabs} options={{ headerTitle: '首页' }} />
-          <Stack.Screen name="Category" component={Category} options={{headerTitle :'分类'}}/>
+          <Stack.Screen name="Category" component={Category} options={{
+            headerTitle: '分类',
+          
+          
+          }} />
 
 
         </Stack.Navigator>

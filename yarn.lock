@@ -4111,7 +4111,7 @@ interpret@^1.0.0:
   resolved "https://registry.npm.taobao.org/interpret/download/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha1-Zlq4vE2iendKQFhOgS4+D6RbGh4=
 
-invariant@^2.2.1, invariant@^2.2.4:
+invariant@>=2, invariant@^2.2.1, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.nlark.com/invariant/download/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha1-YQ88ksk1nOHbYW5TgAjSP/NRWOY=
@@ -6612,6 +6612,13 @@ react-native@0.64.1:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
     ws "^6.1.4"
+
+react-navigation-header-buttons@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.nlark.com/react-navigation-header-buttons/download/react-navigation-header-buttons-9.0.0.tgz#418b3b33cc92a6e9a24e1778bfbdd845a17ce6ee"
+  integrity sha1-QYs7M8ySpumiThd4v73YRaF85u4=
+  dependencies:
+    invariant ">=2"
 
 react-navigation-stack@^2.10.4:
   version "2.10.4"

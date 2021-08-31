@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 20:41:08
- * @LastEditTime: 2021-08-25 22:19:45
+ * @LastEditTime: 2021-08-31 14:34:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Category\index.tsx
@@ -12,7 +12,10 @@ import { View, StyleSheet, Text } from 'react-native';
 import { RootState } from '@/models/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { ICategory } from '@/models/category.ts'
-import {viewportWith} from '@/utils/index'
+import { viewportWith } from '@/utils/index'
+import { RootStackNavigation, RootStackParamList } from '@/navigator/index'
+import HeaderRightBtn from './HeaderRightBtn'
+
 
 
 const mapStateToProps = ({ category }: RootState) => {
@@ -26,9 +29,12 @@ const mapStateToProps = ({ category }: RootState) => {
 const connector = connect(mapStateToProps)
 
 type ModelState = ConnectedProps<typeof connector>
-interface IProps extends ModelState { }
+interface IProps extends ModelState {
+    navigation:RootStackNavigation
+ }
 interface IState {
     myCategorys: ICategory[]
+   
 }
 const parentWidth = viewportWith - 10;
 const itemWidth=parentWidth/4
@@ -37,10 +43,27 @@ class Category extends React.Component<IProps, IState>{
     state = {
         myCategorys: this.props.myCategorys
     }
+    constructor(props:IProps) {
+        super(props)
+        props.navigation.setOptions({
+            headerRight: () => {
+                return <HeaderRightBtn onSubmit={this.onSubmit}/>
+              }
+
+        })
+ 
+    }
+
+    onSubmit = () => {
+        const { dispatch } = this.props
+        dispatch({
+            type:'category/toggle'
+        })
+    }
 
     renderItem = (item: ICategory, index: number) => {
         return (
-            <View style={{ width: itemWidth, height: 40,  }} key={item.id}>
+            <View style={{ width: itemWidth, height: 40, }} key={item.id}>
                 <View style={{ flex:1,margin:5, height: 40, backgroundColor: '#fff',justifyContent: 'center',alignItems:'center'}}>
                 <Text>
                     {item.name}
@@ -81,7 +104,10 @@ class Category extends React.Component<IProps, IState>{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#f3f6f6'
+        backgroundColor: '#f3f6f6',
+      
+        paddingHorizontal:5,
+        
     },
     classifyName: {
      
@@ -91,8 +117,11 @@ const styles = StyleSheet.create({
     },
     classifyView: {
         flexDirection: 'row',
+  
+       
+        
         flexWrap: 'wrap',
-        padding:5
+        // padding:5
     }
 
   
