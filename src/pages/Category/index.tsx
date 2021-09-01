@@ -1,20 +1,22 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 20:41:08
- * @LastEditTime: 2021-08-31 14:34:18
+ * @LastEditTime: 2021-09-01 21:34:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\pages\Category\index.tsx
  */
 import React from 'react'
 import { MaterialTopTabBar, MaterialTopTabBarProps } from '@react-navigation/material-top-tabs'
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { RootState } from '@/models/index'
 import { connect, ConnectedProps } from 'react-redux'
 import { ICategory } from '@/models/category.ts'
 import { viewportWith } from '@/utils/index'
 import { RootStackNavigation, RootStackParamList } from '@/navigator/index'
 import HeaderRightBtn from './HeaderRightBtn'
+import Item from './Item'
+import _ from 'lodash'
 
 
 
@@ -30,48 +32,41 @@ const connector = connect(mapStateToProps)
 
 type ModelState = ConnectedProps<typeof connector>
 interface IProps extends ModelState {
-    navigation:RootStackNavigation
- }
+    navigation: RootStackNavigation
+}
 interface IState {
     myCategorys: ICategory[]
-   
+
 }
 const parentWidth = viewportWith - 10;
-const itemWidth=parentWidth/4
+const itemWidth = parentWidth / 4
 
 class Category extends React.Component<IProps, IState>{
     state = {
         myCategorys: this.props.myCategorys
     }
-    constructor(props:IProps) {
+    constructor(props: IProps) {
         super(props)
         props.navigation.setOptions({
             headerRight: () => {
-                return <HeaderRightBtn onSubmit={this.onSubmit}/>
-              }
+                return <HeaderRightBtn onSubmit={this.onSubmit} />
+            }
 
         })
- 
+
     }
 
     onSubmit = () => {
         const { dispatch } = this.props
         dispatch({
-            type:'category/toggle'
+            type: 'category/toggle'
         })
     }
 
     renderItem = (item: ICategory, index: number) => {
         return (
-            <View style={{ width: itemWidth, height: 40, }} key={item.id}>
-                <View style={{ flex:1,margin:5, height: 40, backgroundColor: '#fff',justifyContent: 'center',alignItems:'center'}}>
-                <Text>
-                    {item.name}
-                </Text>
+            <Item data={item} selected={true} />
 
-                </View>
-            
-            </View>
         )
 
 
@@ -79,8 +74,10 @@ class Category extends React.Component<IProps, IState>{
     render() {
         const { categorys } = this.props;
         const { myCategorys } = this.state
+        const classfyGroup = _.groupBy(categorys, (item) => item.classify)
+        console.log(categorys,classfyGroup)
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <Text style={styles.classifyName}>
                     我的分类
                 </Text>
@@ -88,14 +85,24 @@ class Category extends React.Component<IProps, IState>{
                     {myCategorys.map(this.renderItem)}
                 </View>
                 <View>
-                    <Text style={styles.classifyName}>
-                        所有分类
-                    </Text>
-                    <View style={styles.classifyView}>
-                        {categorys.map(this.renderItem)}
-                    </View>
+                    {Object.keys(classfyGroup).map(classify => {
+                        return (
+                            <View key={classify}>
+                                <Text style={styles.classifyName}>
+                                    {classify}
+                                 </Text>
+                                <View style={styles.classifyView}>
+                                    {classfyGroup[classify].map(this.renderItem)}
+                                </View>
+                            </View>
+
+
+                        )
+
+                    })}
+
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -105,26 +112,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f3f6f6',
-      
-        paddingHorizontal:5,
-        
+
+        paddingHorizontal: 5,
+
     },
     classifyName: {
-     
+        marginLeft: 10,
         fontSize: 16,
         marginTop: 14,
         marginBottom: 8,
     },
     classifyView: {
         flexDirection: 'row',
-  
-       
-        
         flexWrap: 'wrap',
         // padding:5
     }
 
-  
-  
-  })
+
+
+})
 export default connector(Category) 
