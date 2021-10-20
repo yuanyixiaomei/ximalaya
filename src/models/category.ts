@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-23 21:05:13
- * @LastEditTime: 2021-08-31 14:30:26
+ * @LastEditTime: 2021-09-28 18:24:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \ximalaya\src\models\category.ts
@@ -18,9 +18,9 @@ import storage, { load } from "@/config/storage";
 import axios from "axios";
 import { RootState } from ".";
 
-const CATEGORY_URL='/mock/709/category'
+const CATEGORY_URL = "/mock/709/category";
 
- export interface ICategory {
+export interface ICategory {
   id: string;
   name: string;
   classify?: string;
@@ -29,14 +29,14 @@ const CATEGORY_URL='/mock/709/category'
 interface CategoryModelState {
   myCategorys: ICategory[];
   categorys: ICategory[];
-  isEdit:boolean
+  isEdit: boolean;
 }
 interface CategoryModel extends Model {
   namespace: "category";
   state: CategoryModelState;
   effects: {
     loadData: Effect;
-    toggle:Effect
+    toggle: Effect;
   };
   reducers: {
     setState: Reducer<CategoryModelState>;
@@ -85,22 +85,26 @@ const categoryModel: CategoryModel = {
       }
     },
     *toggle({ payload }, { put, select }) {
-    const category= yield select(({ category }: RootState) => {
-        return category
-        
-    })
-      
+      const category = yield select(({ category }: RootState) => {
+        return category;
+      });
+
       yield put({
-      
-        type: 'setState',
+        type: "setState",
         payload: {
-          isEdit:!category.isEdit,
-        }
-    })
-      
-      
-      
-    }
+          isEdit: !category.isEdit,
+          myCategorys:payload.myCategorys
+        },
+      });
+
+      if (category.isEdit) {
+        storage.save({
+          key: 'myCategorys',
+          data:payload.myCategorys,
+        })
+        
+      }
+    },
   },
   reducers: {
     setState(state, { payload }) {
@@ -116,12 +120,12 @@ const categoryModel: CategoryModel = {
     },
     asyncStorage() {
       storage.sync.categorys = async () => {
-        const {data} = await axios.get(CATEGORY_URL)
-        return data
+        const { data } = await axios.get(CATEGORY_URL);
+        return data;
       };
       storage.sync.myCategorys = async () => {
-        return null
-      }
+        return null;
+      };
     },
   },
 };
